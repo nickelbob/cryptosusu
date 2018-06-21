@@ -1,5 +1,9 @@
-# Crypt SuSu
+# Crypto SuSu
+The goal of the Crypto Susu project is to create a Ethereum-backed Susu collector.  This is primarily a learning vehicle for the developers involved.
+
 This project is built from the seed of the [Truffle Pet Shop tutorial](https://truffleframework.com/tutorials/pet-shop).  You can find detailed info there and most of it should apply.  The only things I'm planning on changing are the contracts and the web app.  For now all the supporting code will remain the same.
+
+Read [HERE](https://en.wikipedia.org/wiki/Susu_collectors) to learn more about what a "Susu collector".
 
 # Getting Started
  1. Install [Node.js and npm](https://nodejs.org/en/)
