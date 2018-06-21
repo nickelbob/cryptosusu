@@ -37,7 +37,7 @@ App = {
   },
 
   initContract: function() {
-		$.getJSON('Adoption.json', function(data) {
+		$.getJSON('Susu.json', function(data) {
 		  // Get the necessary contract artifact file and instantiate it with truffle-contract
 		  var AdoptionArtifact = data;
 		  App.contracts.Adoption = TruffleContract(AdoptionArtifact);
