@@ -4,7 +4,7 @@ contract Susu {
     uint public value;
     address public seller;
     address public buyer;
-    enum State { Created, Locked, Inactive }
+    enum State {Created, Locked, Inactive}
     State public state;
 
     // Ensure that `msg.value` is an even number.
@@ -52,11 +52,7 @@ contract Susu {
     /// Abort the purchase and reclaim the ether.
     /// Can only be called by the seller before
     /// the contract is locked.
-    function abort()
-    public
-    onlySeller
-    inState(State.Created)
-    {
+    function abort() public onlySeller inState(State.Created) {
         emit Aborted();
         state = State.Inactive;
         seller.transfer(address(this).balance);
@@ -66,12 +62,7 @@ contract Susu {
     /// Transaction has to include `2 * value` ether.
     /// The ether will be locked until confirmReceived
     /// is called.
-    function confirmPurchase()
-    public
-    inState(State.Created)
-    condition(msg.value == (2 * value))
-    payable
-    {
+    function confirmPurchase() public inState(State.Created) condition(msg.value == (2 * value)) payable {
         emit PurchaseConfirmed();
         buyer = msg.sender;
         state = State.Locked;
@@ -79,11 +70,7 @@ contract Susu {
 
     /// Confirm that you (the buyer) received the item.
     /// This will release the locked ether.
-    function confirmReceived()
-    public
-    onlyBuyer
-    inState(State.Locked)
-    {
+    function confirmReceived() public onlyBuyer inState(State.Locked) {
         emit ItemReceived();
         // It is important to change the state first because
         // otherwise, the contracts called using `send` below
