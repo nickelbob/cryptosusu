@@ -56,14 +56,13 @@ App = {
         from: myAccount,
         to: "0x461113f2AaE7284649cC53Ba5761668C82Dd587c",
         value: web3.toWei(0.5, 'ether'),
-        gasLimit: 420000,
         gas: 210000,
         gasPrice: 20000000000
       });
     }).then(function(result) {
-      return console.log('setHowMuch SUCCUSS! result:', result);
+      return console.log('send SUCCUSS! result:', result);
     }).catch(function(err) {
-      console.log(err.message);
+      console.error('error:', err.message);
     });
   },
 
