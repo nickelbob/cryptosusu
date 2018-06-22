@@ -14,6 +14,7 @@ contract Susu {
         seller = msg.sender;
         value = msg.value / 2;
         require((2 * value) == msg.value, "Value has to be even.");
+        state = State.Created;
     }
 
     modifier condition(bool _condition) {
