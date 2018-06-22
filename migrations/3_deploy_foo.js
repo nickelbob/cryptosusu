@@ -1,8 +1,5 @@
-var Foo = artifacts.require("Foo");
+var SimpleStorage = artifacts.require("SimpleStorage");
 
-module.exports = function(deployer, network, accounts) {
-  deployer.deploy(Foo, {
-    from: accounts[0],
-    value: 1000000000000000,
-  });
+module.exports = function(deployer) {
+  deployer.deploy(SimpleStorage);
 };

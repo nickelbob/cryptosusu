@@ -1,11 +1,8 @@
 pragma solidity ^0.4.22;
 
-contract Susu {
+contract SimpleStorage {
     address public recipient;
     uint public howMuch;
-
-    constructor() public payable {
-    }
 
     function setHowMuch(uint _howMuch) public {
         howMuch = _howMuch;
@@ -18,4 +15,9 @@ contract Susu {
     function setRecipient(address _recipient) public {
         recipient = _recipient;
     }
+
+    function giveMoolah() public payable {
+        recipient.transfer(howMuch);
+    }
+
 }

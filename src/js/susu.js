@@ -1,6 +1,7 @@
 App = {
   web3Provider: null,
   contracts: {},
+  myAccount: '',
 
   init: function () {
     return App.initWeb3();
@@ -15,6 +16,13 @@ App = {
       App.web3Provider = new Web3.providers.HttpProvider('http://localhost:7545');
     }
     web3 = new Web3(App.web3Provider);
+
+    web3.eth.getAccounts(function(error, accounts) {
+      if (error) {
+        console.log(error);
+      }
+      myAccount = accounts[0];
+    });
 
     return App.initContract();
   },
@@ -33,7 +41,30 @@ App = {
   },
 
   bindEvents: function () {
-    $(document).on('click', '.btn-confirmPurchase', App.confirmPurchase);
+    $(document).on('click', '.btn-setMe', App.setMe);
+    $(document).on('click', '.btn-send', App.send);
+    $(document).on('click', '.btn-getRecip', App.getRecip);
+    $(document).on('click', '.btn-getMoolah', App.getMoolah);
+    $(document).on('click', '.btn-giveMoolah', App.giveMoolah);
+  },
+
+  send: function(event) {
+    event.preventDefault();
+
+    App.contracts.Susu.deployed().then(function(instance) {
+      instance.sendTransaction({
+        from: myAccount,
+        to: "0x461113f2AaE7284649cC53Ba5761668C82Dd587c",
+        value: web3.toWei(0.5, 'ether'),
+        gasLimit: 420000,
+        gas: 210000,
+        gasPrice: 20000000000
+      });
+    }).then(function(result) {
+      return console.log('setHowMuch SUCCUSS! result:', result);
+    }).catch(function(err) {
+      console.log(err.message);
+    });
   },
 
   confirmPurchase: function(event) {
@@ -46,67 +77,70 @@ App = {
       var account = accounts[0];
 
       App.contracts.Susu.deployed().then(function(instance) {
-        console.log('instance:',instance);
-        return instance.confirmPurchase({
-          from: account,
-          value: 1000000000000000,
-          gas: 4712388,
-          gasPrice: 1,
-        });
+        // return instance.giveMoolah.sendTransaction({dst:0x461113f2AaE7284649cC53Ba5761668C82Dd587c, howMuch:12345600000});
+        return instance.setRecip.sendTransaction(account);
       }).then(function(result) {
         return console.log('SUCCUSS! result:', result);
       }).catch(function(err) {
         console.log(err.message);
       });
     });
-  }
+  },
 
-  /*
-    markAdopted: function(adopters, account) {
-      var adoptionInstance;
+  setMe: function(event) {
+    event.preventDefault();
 
-      App.contracts.Adoption.deployed().then(function(instance) {
-        adoptionInstance = instance;
+    web3.eth.getAccounts(function(error, accounts) {
+      if (error) {
+        console.log(error);
+      }
+      var account = accounts[0];
 
-        return adoptionInstance.getAdopters.call();
-      }).then(function(adopters) {
-        for (i = 0; i < adopters.length; i++) {
-          if (adopters[i] !== '0x0000000000000000000000000000000000000000') {
-            $('.panel-pet').eq(i).find('button').text('Success').attr('disabled', true);
-          }
-        }
+      App.contracts.Susu.deployed().then(function(instance) {
+        return instance.setRecip.sendTransaction(account);
+      }).then(function(result) {
+        return console.log('setRecip SUCCUSS! result:', result);
       }).catch(function(err) {
         console.log(err.message);
       });
-    },
+    });
+  },
 
-    handleAdopt: function(event) {
-      event.preventDefault();
+  getRecip: function(event) {
+    event.preventDefault();
 
-      var petId = parseInt($(event.target).data('id'));
+    App.contracts.Susu.deployed().then(function(instance) {
+      return instance.recipient.call();
+    }).then(function(result) {
+      return console.log('getRecip SUCCUSS! result:', result);
+    }).catch(function(err) {
+      console.log(err.message);
+    });
+  },
 
-      var adoptionInstance;
+  getMoolah: function(event) {
+    event.preventDefault();
 
-      web3.eth.getAccounts(function(error, accounts) {
-        if (error) {
-          console.log(error);
-        }
+    App.contracts.Susu.deployed().then(function(instance) {
+      return instance.howMuch.call();
+    }).then(function(result) {
+      return console.log('getMoolah SUCCUSS! result:', result);
+    }).catch(function(err) {
+      console.log(err.message);
+    });
+  },
 
-        var account = accounts[0];
+  giveMoolah: function(event) {
+    event.preventDefault();
 
-        App.contracts.Adoption.deployed().then(function(instance) {
-          adoptionInstance = instance;
-
-          // Execute adopt as a transaction by sending account
-          return adoptionInstance.adopt(petId, {from: account});
-        }).then(function(result) {
-          return App.markAdopted();
-        }).catch(function(err) {
-          console.log(err.message);
-        });
-      });
-    }
-  */
+    App.contracts.Susu.deployed().then(function(instance) {
+      return instance.giveMoolah.sendTransaction({gas:100000, gasPrice:1});
+    }).then(function(result) {
+      return console.log('getMoolah SUCCUSS! result:', result);
+    }).catch(function(err) {
+      console.log(err.message);
+    });
+  }
 };
 
 $(function () {
