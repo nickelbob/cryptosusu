@@ -22,11 +22,11 @@ App = {
   initContract: function () {
     $.getJSON('Susu.json', function (data) {
       // Get the necessary contract artifact file and instantiate it with truffle-contract
-      var AdoptionArtifact = data;
-      App.contracts.Adoption = TruffleContract(AdoptionArtifact);
+      var SusuContractArtifact = data;
+      App.contracts.Susu = TruffleContract(SusuContractArtifact);
 
       // Set the provider for our contract
-      App.contracts.Adoption.setProvider(App.web3Provider);
+      App.contracts.Susu.setProvider(App.web3Provider);
     });
 
     return App.bindEvents();
@@ -45,7 +45,7 @@ App = {
       }
       var account = accounts[0];
 
-      App.contracts.Adoption.deployed().then(function(instance) {
+      App.contracts.Susu.deployed().then(function(instance) {
         console.log('instance:',instance);
         return instance.confirmPurchase({
           from: account,
