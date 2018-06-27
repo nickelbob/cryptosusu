@@ -39,6 +39,7 @@ contract Susu {
                 }
 
                 lastRecipient = orderedRecipients[0];
+                return;
             }
         }
     }
